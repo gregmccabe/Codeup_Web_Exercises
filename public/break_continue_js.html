@@ -1,0 +1,33 @@
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <script>
+        var random = Math.floor((Math.random()*50)+1);
+
+        while (random % 2 == 0) {
+            random = Math.floor((Math.random()*50)+1);
+        }
+
+        console.log('generates a random odd ' + random);
+
+        for (var i = 1; i <= 50; i++) {
+            // console.log ('current number is: ' + i);
+            if (i % 2  == 0) {
+                continue;
+            } else if (i == random) {
+                console.log ('Skipping number is ' + i);
+            } else {
+                console.log ('current number is ' + i);
+            }
+
+        }
+
+
+        //to generate a random number betweem 1 and 50. If the number isn't odd, keep getting a new random number till it is odd.
+        //Use console.log to log all the odd numbers from 1 to 50, except the random odd number you generated, by using break and continue. Try to match the output shown below (your random number will be different).
+
+    </script>
+</body>
+</html>
