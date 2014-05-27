@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <script>
+        // ignore these lines for now
+// just know that the variable 'color' will end up with a random value from the colors array
+        var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
+        var color = colors[Math.floor(Math.random()*colors.length)];
+
+        var favorite = 'green';
+// todo: Create a block of if/else statements to check for every color except indigo and violet.
+        if (color == 'red') {
+            console.log('Red is the color of a Rose.');
+        } else if (color == 'orange') {
+            console.log('orangeis a  color of a orange.');
+        } else if (color == 'yellow') {
+            console.log('yellow is the color of a bananna.');
+        } else if (color == 'green') {
+            console.log('green is the color of an avacado.');
+        } else {
+            console.log('I dont know anything by that color!');
+        }
+        var message = (color == favorite) ? 'Go Irish' : 'what are ya yella.' ;
+            console.log(message);
+
+
+    </script>
+</body>
+</html>
