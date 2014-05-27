@@ -1,0 +1,28 @@
+<html>
+<head>
+    <title></title>
+</head>
+<h3>user_interaction_js.html</h3>
+<body>
+    <script>
+        // todo: Ask the user for their name.
+        //Keep asking if an empty input is provided.
+        var userName = prompt('What is you name?');
+        while (userName == null || userName == "") {
+            userName = prompt('What is you name?');
+        }
+// todo: Show an alert message that welcomes the user based on their input.
+        alert("Welcome " + userName);
+        var pizza = confirm('Do you like Pizza?');
+            if (pizza == true) {
+                alert("Pizza Rock's")
+            } else {
+                alert('I pitty to fool, who does\'nt like Pizza!!!');
+        }
+
+// todo: Ask the user if they like pizza.
+//       Based on their answer tell show a creative alert message.
+    </script>
+
+</body>
+</html>
