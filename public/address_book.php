@@ -1,34 +1,41 @@
 <?php
 
-$address_book = [];
-$filename = "address_book.csv";
+class AddressDataStore {
 
-function write_csv($BigArray, $filename) {
-    if (is_writable($filename)) {
-        $handle = fopen($filename, 'w');
-        foreach ($BigArray as $fields) {
-            fputcsv($handle, $fields);
-        }
-        fclose($handle);
-    }
+    public $filename = 'address_book.csv';
 
-}
-
-function read_csv($filename) {
+    public function read_address_book() {
     $entries = [];
-    $handle = fopen($filename, 'r');
+    $handle = fopen($this->filename, 'r');
+
     while(!feof($handle)) {
       $row = fgetcsv($handle);
       if (is_array($row)) {
           $entries[] = $row;
+        }
+
     }
 
-  }
     fclose($handle);
     return $entries;
 }
 
-$address_book = read_csv($filename);
+    function write_address_book($BigArray) {
+
+        if (is_writable($this->filename)) {
+        $handle = fopen($this->filename, 'w');
+        foreach ($BigArray as $fields) {
+            fputcsv($handle, $fields);
+        }
+        fclose($handle);
+        }
+
+    }
+
+}
+
+$storeData = new AddressDataStore;
+$address_book = $storeData->read_address_book();
 
 
 if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['state']) && !empty($_POST['zip'])) {
@@ -41,7 +48,8 @@ if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']
     $new_address['phone'] = $_POST['phone'];
 
     array_push($address_book, $new_address);
-    write_csv($address_book, $filename);
+    $storeData->write_address_book($address_book);
+
 
 } else {
 
@@ -56,16 +64,14 @@ if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']
 
 }
 
-// var_dump($address_book);
-
 if (isset($_GET['removeIndex'])) {
     unset($address_book[$_GET['removeIndex']]);
-    write_csv($address_book, $filename);
+    $storeData->write_address_book($address_book);
     header('Location: /address_book.php');
     exit;
 }
-?>
 
+?>
 
 <!DOCTYPE html>
 <html>
