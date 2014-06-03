@@ -47,6 +47,7 @@ if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']
     $new_address['zip'] = $_POST['zip'];
     $new_address['phone'] = $_POST['phone'];
 
+
     array_push($address_book, $new_address);
     $storeData->write_address_book($address_book);
 
@@ -76,7 +77,7 @@ if (isset($_GET['removeIndex'])) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>address_book.php</title>
 </head>
 <body>
     <h2>Address book:</h2>
@@ -88,6 +89,7 @@ if (isset($_GET['removeIndex'])) {
             <th>State</th>
             <th>Zip</th>
             <th>Phone</th>
+            <th>Delete</th>
         </tr>
         <? foreach ($address_book as $key => $fields) : ?>
         <tr>
