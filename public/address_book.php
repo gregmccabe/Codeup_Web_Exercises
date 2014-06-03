@@ -1,11 +1,6 @@
 <?php
 
-$contacts = [
-    ['The White House', '1600 Pennsylvania Avenue NW', 'Washington', 'DC', '20500'],
-    ['Marvel Comics', 'P.O. Box 1527', 'Long Island City', 'NY', '11101'],
-    ['LucasArts', 'P.O. Box 29901', 'San Francisco', 'CA', '94129-0901']
-];
-$new_address = [];
+$address_book = [];
 $filename = "address_book.csv";
 
 function write_csv($BigArray, $filename) {
@@ -19,6 +14,22 @@ function write_csv($BigArray, $filename) {
 
 }
 
+function read_csv($filename) {
+    $entries = [];
+    $handle = fopen($filename, 'r');
+    while(!feof($handle)) {
+      $row = fgetcsv($handle);
+      if (is_array($row)) {
+          $entries[] = $row;
+    }
+
+  }
+    fclose($handle);
+    return $entries;
+}
+
+$address_book = read_csv($filename);
+
 
 if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['state']) && !empty($_POST['zip'])) {
 
@@ -29,19 +40,30 @@ if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']
     $new_address['zip'] = $_POST['zip'];
     $new_address['phone'] = $_POST['phone'];
 
-    array_push($contacts, $new_address);
-    write_csv($contacts, $filename);
+    array_push($address_book, $new_address);
+    write_csv($address_book, $filename);
 
 } else {
 
+        $errorMessage = "";
+        array_pop($_POST);
+
     foreach ($_POST as $key => $value) {
         if (empty($value)) {
-            echo "<h1>" . ucfirst($key) . " is empty.</h1>";
+            $errorMessage .= "<h3 style='color:red'>" . ucfirst($key) . " is required field!.</h3>";
         }
     }
 
 }
 
+// var_dump($address_book);
+
+if (isset($_GET['removeIndex'])) {
+    unset($address_book[$_GET['removeIndex']]);
+    write_csv($address_book, $filename);
+    header('Location: /address_book.php');
+    exit;
+}
 ?>
 
 
@@ -61,14 +83,19 @@ if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']
             <th>Zip</th>
             <th>Phone</th>
         </tr>
-        <? foreach ($contacts as $fields) : ?>
+        <? foreach ($address_book as $key => $fields) : ?>
         <tr>
             <? foreach ($fields as $value) : ?>
-                <td><?= $value; ?></td>
+            <td><?= htmlspecialchars(strip_tags($value)); ?></td>
             <? endforeach; ?>
+            <td><a href="address_book.php?removeIndex=<?= $key?>">Delete Contact</a></td>
         </tr>
             <? endforeach; ?>
     </table>
+        <? if (!empty($errorMessage)) {
+            echo $errorMessage;
+        }
+        ?>
 
     <form method="POST">
         <h3>Contact</h3>
