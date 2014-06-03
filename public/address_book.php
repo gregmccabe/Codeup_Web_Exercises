@@ -51,8 +51,8 @@ if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']
     <title></title>
 </head>
 <body>
-    <h1>Contact List:</h1>
-    <table>
+    <h2>Address book:</h2>
+    <table border="1">
         <tr>
             <th>Name</th>
             <th>Address</th>
@@ -71,7 +71,7 @@ if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']
     </table>
 
     <form method="POST">
-        <h3>Address Book</h3>
+        <h3>Contact</h3>
         <p>
             <label for="Name">Name</label>
             <input id="Name" name="name" type="text" placeholder="Enter full Name">
