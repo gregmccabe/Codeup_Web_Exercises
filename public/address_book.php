@@ -2,7 +2,10 @@
 
 class AddressDataStore {
 
-    public $filename = 'address_book.csv';
+    public $filename = '';
+    public function __construct($filename = 'address_book.csv') {
+        $this->filename = $filename;
+    }
 
     public function read_address_book() {
     $entries = [];
@@ -20,7 +23,7 @@ class AddressDataStore {
     return $entries;
 }
 
-    function write_address_book($BigArray) {
+    public function write_address_book($BigArray) {
 
         if (is_writable($this->filename)) {
         $handle = fopen($this->filename, 'w');
@@ -34,9 +37,9 @@ class AddressDataStore {
 
 }
 
-$storeData = new AddressDataStore;
-$address_book = $storeData->read_address_book();
 
+$storeData = new AddressDataStore('address_book.csv');
+$address_book = $storeData->read_address_book();
 
 if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['state']) && !empty($_POST['zip'])) {
 
@@ -70,6 +73,25 @@ if (isset($_GET['removeIndex'])) {
     $storeData->write_address_book($address_book);
     header('Location: /address_book.php');
     exit;
+}
+
+if (count($_FILES) > 0 && $_FILES['file1']['error'] == 0) {
+
+    if ($_FILES['file1']["type"] != "text/csv") {
+        echo "ERROR: file must be in text/csv!";
+    } else {
+
+        $upload_dir = '/vagrant/sites/codeup.dev/public/uploads/';
+        $uploadFilename = basename($_FILES['file1']['name']);
+
+        $saved_filename = $upload_dir . $uploadFilename;
+        move_uploaded_file($_FILES['file1']['tmp_name'], $saved_filename);
+
+        $upload = new AddressDataStore($saved_filename);
+        $address_uploaded = $upload->read_address_book();
+        $address_book = array_merge($address_book, $address_uploaded);
+        $storeData->write_address_book($address_book);
+    }
 }
 
 ?>
@@ -134,9 +156,18 @@ if (isset($_GET['removeIndex'])) {
         <p>
             <button type="Submit">Submit</button>
         </p>
-
-
     </form>
+    <h3>Upload File</h3>
+
+        <form method="POST" enctype="multipart/form-data" action="/address_book.php">
+            <p>
+                <label for="file1">File to upload: </label>
+                <input type="file" id="file1" name="file1">
+            </p>
+
+            <p><input type="submit" value="Upload"></p>
+
+        </form>
 
 </body>
 </html>
