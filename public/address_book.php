@@ -1,7 +1,7 @@
 <?php
 
 
-include('class_store/address_data_store.php');
+require_once('class_store/address_data_store.php');
 
 
 $storeData = new AddressDataStore('address_book.csv');
