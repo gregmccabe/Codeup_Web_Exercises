@@ -1,9 +1,40 @@
-/*
-this content is stored in a file named "site.css"
-in a directory named "css" in the web root
-*/
-
-.fancy-header {
-    color: blue;
+h1 {
+    color: purple;
     text-decoration: underline;
+}
+
+.box {
+    border: 1px solid black;
+    width: 150px;
+    height: 50px;
+    margin-bottom: 10px;
+    padding: 20px;
+    color:white;
+    font-weight: bold;
+    box-shadow: black;
+}
+
+#red {
+    background-color: #ff0000;
+}
+
+#orange {
+    background-color: orange;
+    margin-left: 30px;
+}
+#yellow {
+    background-color: yellow;
+    margin-left: 60px;
+}
+#green {
+    background-color: green;
+    margin-left: 90px;
+}
+#blue {
+    background-color: blue;
+    margin-left: 120px;
+}
+#purple {
+    background-color: purple;
+    margin-left: 150px;
 }
