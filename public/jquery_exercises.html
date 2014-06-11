@@ -1,13 +1,45 @@
 <html>
 <head>
     <title>jquery</title>
-    <script src="/js/jquery-2.1.1.js"></script>
 </head>
 <body>
+    <div>
+        <h1 id="mainHead">playing with jquery</h1>
+    </div>
+            <p class="codeup" id="1stP">
+                Kielbasa biltong rump tail. Cow venison pig, short loin frankfurter biltong filet mignon fatback salami sausage chuck swine. Sausage prosciutto kielbasa bacon frankfurter salami brisket cow beef meatball. Tri-tip pork chop pork belly, cow ham hock pastrami short ribs boudin.
+            </p>
+            <ul class="codeup">
+                <li class="items">Bacon</li>
+                <li class="items">Pork</li>
+                <li class="items">Kielbasa</li>
+                <li class="items">Venison</li>
+            </ul>
+
+    <script src="/js/jquery-2.1.1.js"></script>
     <script>
-        $(document).ready(function() {
-        alert( 'The DOM has finished loading!' );
-});
+    $('document').ready(function() {
+
+        $('h1').click(function(event) {
+            /* Act on the event */
+        $(this).css('background-color', '#FF0');
+        });
+
+        $('#1stP').dblclick(function(event) {
+            /* Act on the event */
+        $(this).css('font-size', '18px');
+
+        });
+        $('li').hover(function() {
+            /* Stuff to do when the mouse enters the element */
+            $(this).css('color', 'red');
+        }, function() {
+            /* Stuff to do when the mouse leaves the element */
+            $(this).css('color', 'black');
+        });
+    });
+
     </script>
+
 </body>
 </html>
