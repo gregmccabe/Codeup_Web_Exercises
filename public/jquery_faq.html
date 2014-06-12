@@ -1,14 +1,9 @@
+<!doctype html>
 <html>
 <head>
     <title>jquery-faq</title>
     <script src="/js/jquery-2.1.1.js"></script>
-     <script>
-        $('document').ready(function() {
-            $('dt').on('click', function() {
-                $('dd').toggleClass('invisible');
-            });
-        });
-    </script>
+
     <style>
         .invisible {
             display: none;
@@ -49,5 +44,69 @@
             <dd class="invisible">Answer 10</dd>
         </dt>
     </dl>
+        <h3>Arches</h3>
+            <ul>
+                <li>
+                    Are pets allowed in Arches?
+                    Yes, but they are not allowed on hiking trails.
+                </li>
+                <li>
+                    Can I ride my ATV in Arches?
+                    No, off-highway vehicles (ATVs, UTVs, etc.) are not allowed
+                </li>
+                <li>
+                    Can I get married in Arches?
+                    Yes, though a special use permit is required.
+                </li>
+                <li>
+                    Can I film a movie in Arches?
+                    All commercial photography and filming requires a special use permit.
+                </li>
+            </ul>
+        <h3>Badlands</h3>
+            <ul>
+                <li>
+                    the term badlands has a more geologic definition. Badlands form when soft sedimentary rock is extensively eroded in a dry climate. The park's typical scenery of sharp spires, gullies, and ridges is a premier example of badlands topography.
+                </li>
+                <li>
+                    To fully experience most of what the Badlands has to offer, it takes two days.
+                </li>
+                <li>
+                    Bison live in the Badlands Wilderness Area (west side of the North Unit). You can usually see Bison from the Sage Creek Rim Road.
+                </li>
+                <li>
+                    Kids can complete a Junior Ranger Booklet year-round and earn a badge.
+                </li>
+            </ul>
+        <h3>Carlsbad Cavarns</h3>
+            <ul>
+                <li>
+                    Can we take pictures in the cave? Yes, but camera stands are not allowed on guided tours. Cameras and other electronic equipment are not permitted during the bat exit flight.
+                </li>
+                <li>
+                     Can we take food and drinks with us into the cave? Only plain water, please. Eating and drinking anything but water is not allowed on cave trails because food litter and smells could make a mess of trails and attract animals, like raccoons and skunk into the cave
+                </li>
+                <li>
+                    When can we see the bats? From about mid-April to late-October, thousands of bats fly out of Carlsbad Cavern every evening, weather permitting, to eat insects.
+                </li>
+                <li>
+                    When was Carlsbad Cavern found? We will never know. Native Americans who lived in the area for centuries and early local residents knew about the cave. We credit Jim White for being the first "explorer" of the cave in 1898.
+                </li>
+            </ul>
+
+    <script>
+
+            $('dt').on('click', function() {
+                $('dd').toggleClass('invisible');
+            });
+
+            $('ul').each(function() {
+                $(this).children().first().css('font-weight', 'bold');
+            });
+
+            $('ul').on('click', function() {
+                $(this).addClass('invisible');
+            });
+    </script>
 </body>
 </html>
