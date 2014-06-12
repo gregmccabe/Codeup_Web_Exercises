@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>jquery-faq</title>
+    <script src="/js/jquery-2.1.1.js"></script>
+     <script>
+        $('document').ready(function() {
+            $('dt').on('click', function() {
+                $('dd').toggleClass('invisible');
+            });
+        });
+    </script>
+    <style>
+        .invisible {
+            display: none;
+        }
+    </style>
+
+</head>
+<body>
+    <dl>
+        <dt>Question 1
+            <dd class="invisible">Answer 1</dd>
+        </dt>
+        <dt>Question 2
+            <dd class="invisible">Answer 2</dd>
+        </dt>
+        <dt>Question 3
+            <dd class="invisible">Answer 3</dd>
+        </dt>
+        <dt>Question 4
+            <dd class="invisible">Answer 4</dd>
+        </dt>
+        <dt>Question 5
+            <dd class="invisible">Answer 5</dd>
+        </dt>
+        <dt>Question 6
+            <dd class="invisible">Answer 6</dd>
+        </dt>
+        <dt>Question 7
+            <dd class="invisible">Answer 7</dd>
+        </dt>
+        <dt>Question 8
+            <dd class="invisible">Answer 8</dd>
+        </dt>
+        <dt>Question 9
+            <dd class="invisible">Answer 9</dd>
+        </dt>
+        <dt>Question 10
+            <dd class="invisible">Answer 10</dd>
+        </dt>
+    </dl>
+</body>
+</html>
