@@ -1,0 +1,32 @@
+.gameBoard {
+
+    border:1px #ccc;
+    margin: auto;
+    height: 456px;
+    width: 456px;
+}
+
+.box {
+    border:1px solid #ccc;
+    width: 150px;
+    height: 150px;
+    float: left;
+
+}
+
+.mole {
+    display: none;
+    cursor: pointer;
+    background-image: url('/img/lebron.jpg');
+    width: 150px;
+    height: 150px;
+}
+
+body {
+    background-image: url('/img/james-background-2.jpg');
+
+}
+
+h1 {
+    color:#ccc;
+}
