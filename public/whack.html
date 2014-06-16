@@ -6,9 +6,15 @@
     <script src="/js/jquery-2.1.1.js"></script>
 </head>
 <body>
-    <h1>Whack-A-Mole!</h1>
-    <div class="gameBoard">
+    <!-- <h1>Whack-A-Mole!</h1> -->
+    <div id="header">
+        <h1>Whack-A-Mole</h1>
+        <h2 id="timer">30</h2>
+        <h2 id="running_total">0</h2>
+        <span><button id="start_button">START GAME</button></span>
+    </div>
 
+    <div class="gameBoard">
         <div class="box">
             <div class="mole" id="mole-1"></div>
         </div>
@@ -38,40 +44,46 @@
         </div>
     </div>
     <script>
-        function getRandomInt(min, max) {
-            return Math.floor(Math.random() * (max - min)) + min;
-        }
 
-        var randNumber = getRandomInt(1, 9);
-            console.log(randNumber);
-
+        var score = 0;
+        var timer = 30;
+        var randNumber = null;
+        var holes = $('.box');
         var intervalId = null;
-        var intervalId = setInterval(function () {
-        }, 500);
+        var timeInt = null;
 
-        var timer = 15;
-        var interval = 1000;
+        console.log($(timer));
 
-        var intervalId = setInterval(function () {
-            randNumber = getRandomInt(1, 9);
+        var show = function() {
+            $('.mole').fadeOut();
+            var rand = Math.floor(Math.random() * holes.length);
+            var hole = $(holes[rand]);
+            hole.children().fadeIn();
+        };
 
-            if (timer == 0) {
-                console.log('All done.');
-                clearInterval(intervalId);
+        $('#start_button').click(function() {
 
-            } else {
-                timer--;
-                console.log(timer);
+            clearInterval(intervalId);
+            clearInterval(timeInt);
 
-                $('.mole').fadeOut();
-                $('#mole-' + randNumber).fadeIn();
-                $( '#mole-' + randNumber).click(function() {
-                    $(this).fadeOut(200);
+            intervalId = setInterval(show, 1000);
+            $('.mole').click(function() {
+                $('#running_total').html(++score);
+                $(this).hide();
+            });
 
-                });
-            }
-        }, interval);
+            timeInt = setInterval(function() {
+                $("#timer").html(--timer);
+                if ($("#timer").html() == 0) {
+                    clearInterval(timeInt);
+                    clearInterval(intervalId);
+                    alert("Your score is " + score + "! Great job!");
+                    $(".mole").hide();
+                    $("#timer").html(30);
+                }
+            }, 1000);
 
+        });
     </script>
 </body>
 </html>
