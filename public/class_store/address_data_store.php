@@ -3,10 +3,12 @@
 require_once 'filestore.php';
 class AddressDataStore extends Filestore {
 
-    public $filename = '';
+    // public $filename = '';
 
     public function __construct($filename = 'address_book.csv') {
-        $this->filename = $filename;
+        // $this->filename = $filename;
+        $filename = strtolower($filename);
+        parent::__construct($filename);
     }
 }
 
