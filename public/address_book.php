@@ -5,7 +5,7 @@ require_once('class_store/address_data_store.php');
 
 
 $storeData = new AddressDataStore('address_book.csv');
-$address_book = $storeData->read_address_book();
+$address_book = $storeData->read_csv();
 
 if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['state']) && !empty($_POST['zip'])) {
 
@@ -18,8 +18,7 @@ if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']
 
 
     array_push($address_book, $new_address);
-    $storeData->write_address_book($address_book);
-
+    $storeData->write_csv($address_book);
 
 } else {
 
@@ -36,7 +35,7 @@ if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']
 
 if (isset($_GET['removeIndex'])) {
     unset($address_book[$_GET['removeIndex']]);
-    $storeData->write_address_book($address_book);
+    $storeData->write_csv($address_book);
     header('Location: /address_book.php');
     exit;
 }
@@ -54,9 +53,9 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == 0) {
         move_uploaded_file($_FILES['file1']['tmp_name'], $saved_filename);
 
         $upload = new AddressDataStore($saved_filename);
-        $address_uploaded = $upload->read_address_book();
+        $address_uploaded = $upload->read_csv();
         $address_book = array_merge($address_book, $address_uploaded);
-        $storeData->write_address_book($address_book);
+        $storeData->write_csv($address_book);
     }
 }
 
