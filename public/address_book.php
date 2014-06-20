@@ -1,41 +1,49 @@
 <?php
 
 
-require_once('class_store/address_data_store.php');
+require_once('class_store/filestore.php');
 
 
-$storeData = new AddressDataStore('address_book.csv');
-$address_book = $storeData->read_csv();
+$storeData = new Filestore('address_book.csv');
+$address_book = $storeData->read();
 
-if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['state']) && !empty($_POST['zip'])) {
+class UnexpectedTypeException extends Exception { }
+try {
+    if (!empty($_POST['name']) && !empty($_POST['address']) && !empty($_POST['city']) && !empty($_POST['state']) && !empty($_POST['zip'])) {
+        foreach ($_POST as $key => $value) {
+            if (strlen($value) >= 125) {
+                throw new UnexpectedTypeException("input $key must be less than 125 characters");
+            }
+        }
 
-    $new_address['name'] = $_POST['name'];
-    $new_address['address'] = $_POST['address'];
-    $new_address['city'] = $_POST['city'];
-    $new_address['state'] = $_POST['state'];
-    $new_address['zip'] = $_POST['zip'];
-    $new_address['phone'] = $_POST['phone'];
+        $new_address['name'] = $_POST['name'];
+        $new_address['address'] = $_POST['address'];
+        $new_address['city'] = $_POST['city'];
+        $new_address['state'] = $_POST['state'];
+        $new_address['zip'] = $_POST['zip'];
+        $new_address['phone'] = $_POST['phone'];
 
+        array_push($address_book, $new_address);
+        $storeData->write($address_book);
 
-    array_push($address_book, $new_address);
-    $storeData->write_csv($address_book);
+    } else {
 
-} else {
+            $errorMessage = "";
+            array_pop($_POST);
 
-        $errorMessage = "";
-        array_pop($_POST);
-
-    foreach ($_POST as $key => $value) {
-        if (empty($value)) {
-            $errorMessage .= "<h3 style='color:red'>" . ucfirst($key) . " is required field!.</h3>";
+        foreach ($_POST as $key => $value) {
+            if (empty($value)) {
+                $errorMessage .= "<h3 style='color:red'>" . ucfirst($key) . " is required field!.</h3>";
+            }
         }
     }
 
+} catch(UnexpectedTypeException $e) {
+    $msg = $e->getMessage() . PHP_EOL;
 }
-
 if (isset($_GET['removeIndex'])) {
     unset($address_book[$_GET['removeIndex']]);
-    $storeData->write_csv($address_book);
+    $storeData->write($address_book);
     header('Location: /address_book.php');
     exit;
 }
@@ -52,10 +60,10 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == 0) {
         $saved_filename = $upload_dir . $uploadFilename;
         move_uploaded_file($_FILES['file1']['tmp_name'], $saved_filename);
 
-        $upload = new AddressDataStore($saved_filename);
-        $address_uploaded = $upload->read_csv();
+        $upload = new Filestore($saved_filename);
+        $address_uploaded = $upload->read();
         $address_book = array_merge($address_book, $address_uploaded);
-        $storeData->write_csv($address_book);
+        $storeData->write($address_book);
     }
 }
 
@@ -94,6 +102,9 @@ if (count($_FILES) > 0 && $_FILES['file1']['error'] == 0) {
 
     <form method="POST">
         <h3>Contact</h3>
+            <? if (!empty($msg)) : ?>
+                <?=$msg; ?>
+            <? endif; ?>
         <p>
             <label for="Name">Name</label>
             <input id="Name" name="name" type="text" placeholder="Enter full Name">
