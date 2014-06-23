@@ -8,7 +8,10 @@ $dbc->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 echo $dbc->getAttribute(PDO::ATTR_CONNECTION_STATUS) . "\n";
 
 
-$query = "SELECT id, name, location, date_established, area_in_acres FROM national_parks";
+$limitRecord = 4;
+$pageNumber = 0;
+
+$query = "SELECT * FROM national_parks LIMIT {$limitRecord} OFFSET {$pageNumber}";
 $stmt = $dbc->query($query);
 
 $parks = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -41,5 +44,7 @@ $parks = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </tr>
             <? endforeach; ?>
     </table>
+    <a href=>page forward</a>
+    <a href=>page back</a>
 </body>
 </html>
