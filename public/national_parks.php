@@ -21,9 +21,18 @@ if (isset($_GET['page'])) {
     $offset = $pageNumber * $limitRecord;
 
 }
+// $stmt = $dbc->prepare('SELECT * FROM national_parks WHERE id = :id');
 
-$query = "SELECT * FROM national_parks LIMIT {$limitRecord} OFFSET {$offset}";
-$stmt = $dbc->query($query);
+// $stmt->bindValue(':id', 1, PDO::PARAM_INT);
+// $stmt->execute();
+
+// print_r($stmt->fetchAll(PDO::FETCH_ASSOC));
+$query = "SELECT * FROM national_parks LIMIT :limitRecord OFFSET :offset";
+$stmt = $dbc->prepare($query);
+$stmt->bindValue(':limitRecord', $limitRecord, PDO::PARAM_INT);
+$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
+
 $parks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $count = $dbc->query("SELECT * FROM national_parks;")->fetchColumn();
@@ -57,6 +66,7 @@ $prevPage = $pageNumber - 1;
                 <th>Location</th>
                 <th>Date</th>
                 <th>Acres</th>
+                <th>Descrition</th>
             </tr>
              <? foreach ($parks as $park) : ?>
             <tr>
@@ -76,6 +86,46 @@ $prevPage = $pageNumber - 1;
           <li class="next"><a href="national_parks.php?page=<?= $nextPage; ?>">Next &rarr;</a></li>
         <? endif ?>
     </ul>
+    <form>
+  <fieldset>
+    <legend>National Parks</legend>
+        <p>
+            <label for="name">Park Name</label>
+        </p>
+        <p>
+            <input id="name" name="name" type="text" placeholder="Enter Name">
+        </p>
+
+        <p><label for="location">Location</label></p>
+        <p>
+            <input id="location" name="location" type="text" placeholder="Enter Location">
+        </p>
+
+        <p>
+            <label for="date">Date</label>
+        </p>
+        <p>
+            <input id="date" name="date" type="date" placeholder="Enter Date">
+        </p>
+
+        <p>
+            <label for="acres">Park Acres</label>
+        </p>
+        <p>
+            <input id="acres" name="acres" type="float" placeholder="Enter Acres">
+        </p>
+
+        <p>
+            <label for="description">Park Discription</label>
+        </p>
+        <p>
+            <textarea id="description" name="description" rows="10" cols="100" placeholder="Enter Description"></textarea>
+        </p>
+        <p>
+            <button type="Submit" name="Submit" class="btn btn-success">Submit</button>
+        </p>
+  </fieldset>
+</form>
 </div>
 </body>
 </html
