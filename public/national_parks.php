@@ -2,7 +2,6 @@
 
 $dbc = new PDO('mysql:host=127.0.0.1;dbname=codeup_pdo_test_db', 'greg', 'letmein');
 
-
 $dbc->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $dbc->getAttribute(PDO::ATTR_CONNECTION_STATUS) . "\n";
@@ -22,6 +21,23 @@ if (isset($_GET['page'])) {
 
 }
 
+if ($_POST) {
+    if (!empty($_POST['name']) && !empty($_POST['location']) && !empty($_POST['date']) && !empty($_POST['acres']) && !empty($_POST['description'])) {
+
+    $stmt = $dbc->prepare('INSERT INTO national_parks (name, location, date_established, area_in_acres, park_description) VALUES (:name, :location, :date_established, :acres, :park_description)');
+
+
+        $stmt->bindValue(':name',  $_POST['name'],  PDO::PARAM_STR);
+        $stmt->bindValue(':location', $_POST['location'], PDO::PARAM_STR);
+        $stmt->bindValue(':date_established', $_POST['date'], PDO::PARAM_STR);
+        $stmt->bindValue(':acres', $_POST['acres'], PDO::PARAM_STR);
+        $stmt->bindValue(':park_description', $_POST['description'], PDO::PARAM_STR);
+
+        $stmt->execute();
+        // $dbc->lastInsertId();
+    }
+}
+
 $query = "SELECT * FROM national_parks LIMIT :limitRecord OFFSET :offset";
 $stmt = $dbc->prepare($query);
 $stmt->bindValue(':limitRecord', $limitRecord, PDO::PARAM_INT);
@@ -31,30 +47,11 @@ $stmt->execute();
 $parks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $count = $dbc->query("SELECT * FROM national_parks;")->rowCount();
-// var_dump($count);
-$numPage = floor($count / $limitRecord);
-// var_dump($numPage);
 
+$numPage = floor($count / $limitRecord);
 
 $nextPage = $pageNumber + 1;
 $prevPage = $pageNumber - 1;
-
-if ($_POST) {
-
-    $stmt = $dbc->prepare('INSERT INTO national_parks (name, location, date_established, area_in_acres, park_description) VALUES (:name, :location, :date_established, :acres, :park_description)');
-
-    // foreach ($parks as $park) {
-        $stmt->bindValue(':name',  $_POST['name'],  PDO::PARAM_STR);
-        $stmt->bindValue(':location', $_POST['location'], PDO::PARAM_STR);
-        $stmt->bindValue(':date_established', $_POST['date'], PDO::PARAM_STR);
-        $stmt->bindValue(':acres', $_POST['acres'], PDO::PARAM_STR);
-        $stmt->bindValue(':park_description', $_POST['description'], PDO::PARAM_STR);
-
-        $stmt->execute();
-        echo "Inserted ID: " . $dbc->lastInsertId() . PHP_EOL;
-    }
-// }
-
 
 ?>
 
@@ -63,7 +60,11 @@ if ($_POST) {
 <head>
     <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
+<style>
+    body {
+        background-color: none;
+    }
+</style>
 <!-- Optional theme -->
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
     <meta charset="UTF-8">
@@ -135,7 +136,7 @@ if ($_POST) {
             <textarea id="description" name="description" rows="10" cols="100" placeholder="Enter Description"></textarea>
         </p>
         <p>
-            <button type="Submit" name="Submit" class="btn btn-success">Submit</button>
+            <button type="Submit" name="Submit" class="btn btn-success">Submit</button> <span class="glyphicon glyphicon-hand-left"></span>
         </p>
   </fieldset>
 </form>
