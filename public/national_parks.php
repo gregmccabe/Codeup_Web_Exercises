@@ -2,7 +2,7 @@
 
 $dbc = new PDO('mysql:host=127.0.0.1;dbname=codeup_pdo_test_db', 'greg', 'letmein');
 
-// Tell PDO to throw exceptions on error
+
 $dbc->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $dbc->getAttribute(PDO::ATTR_CONNECTION_STATUS) . "\n";
@@ -21,12 +21,7 @@ if (isset($_GET['page'])) {
     $offset = $pageNumber * $limitRecord;
 
 }
-// $stmt = $dbc->prepare('SELECT * FROM national_parks WHERE id = :id');
 
-// $stmt->bindValue(':id', 1, PDO::PARAM_INT);
-// $stmt->execute();
-
-// print_r($stmt->fetchAll(PDO::FETCH_ASSOC));
 $query = "SELECT * FROM national_parks LIMIT :limitRecord OFFSET :offset";
 $stmt = $dbc->prepare($query);
 $stmt->bindValue(':limitRecord', $limitRecord, PDO::PARAM_INT);
@@ -35,12 +30,30 @@ $stmt->execute();
 
 $parks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$count = $dbc->query("SELECT * FROM national_parks;")->fetchColumn();
+$count = $dbc->query("SELECT * FROM national_parks;")->rowCount();
+// var_dump($count);
+$numPage = floor($count / $limitRecord);
+// var_dump($numPage);
 
-$numPage = ceil($count / $limitRecord);
 
 $nextPage = $pageNumber + 1;
 $prevPage = $pageNumber - 1;
+
+if ($_POST) {
+
+    $stmt = $dbc->prepare('INSERT INTO national_parks (name, location, date_established, area_in_acres, park_description) VALUES (:name, :location, :date_established, :acres, :park_description)');
+
+    // foreach ($parks as $park) {
+        $stmt->bindValue(':name',  $_POST['name'],  PDO::PARAM_STR);
+        $stmt->bindValue(':location', $_POST['location'], PDO::PARAM_STR);
+        $stmt->bindValue(':date_established', $_POST['date'], PDO::PARAM_STR);
+        $stmt->bindValue(':acres', $_POST['acres'], PDO::PARAM_STR);
+        $stmt->bindValue(':park_description', $_POST['description'], PDO::PARAM_STR);
+
+        $stmt->execute();
+        echo "Inserted ID: " . $dbc->lastInsertId() . PHP_EOL;
+    }
+// }
 
 
 ?>
@@ -82,11 +95,11 @@ $prevPage = $pageNumber - 1;
           <li class="previous"><a href="national_parks.php?page=<?= $prevPage; ?>">&larr; Previous</a></li>
         <? endif ?>
 
-        <? if ($pageNumber <= $numPage) : ?>
+        <? if ($pageNumber < $numPage) : ?>
           <li class="next"><a href="national_parks.php?page=<?= $nextPage; ?>">Next &rarr;</a></li>
         <? endif ?>
     </ul>
-    <form>
+    <form method="POST">
   <fieldset>
     <legend>National Parks</legend>
         <p>
