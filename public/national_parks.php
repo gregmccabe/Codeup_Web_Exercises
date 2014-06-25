@@ -62,7 +62,7 @@ $prevPage = $pageNumber - 1;
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 <style>
     body {
-        background-color: none;
+        background-image: url('../img/badlands.jpg');
     }
 </style>
 <!-- Optional theme -->
@@ -73,7 +73,7 @@ $prevPage = $pageNumber - 1;
 <body>
 <div class="container">
     <h1 align="center">National Parks</h1>
-        <table class="table table-striped"border="1">
+        <table class="table"border="1">
             <tr>
                 <th>Id</th>
                 <th>Name</th>
@@ -133,10 +133,10 @@ $prevPage = $pageNumber - 1;
             <label for="description">Park Discription</label>
         </p>
         <p>
-            <textarea id="description" name="description" rows="10" cols="100" placeholder="Enter Description"></textarea>
+            <textarea id="description" name="description" rows="6" cols="50" placeholder="Enter Description"></textarea>
         </p>
         <p>
-            <button type="Submit" name="Submit" class="btn btn-success">Submit</button> <span class="glyphicon glyphicon-hand-left"></span>
+            <button type="Submit" name="Submit" class="btn btn-info">Submit</button>
         </p>
   </fieldset>
 </form>
